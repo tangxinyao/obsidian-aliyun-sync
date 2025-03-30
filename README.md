@@ -13,6 +13,7 @@ flowchart TD
 ```
 
 This plugin allows you to sync your Obsidian notes with Aliyun OSS, including:
+
 - Restoring files from Aliyun OSS to your vault
 - Manual store to Aliyun OSS
 - Automatic store on file save
@@ -22,7 +23,7 @@ This plugin allows you to sync your Obsidian notes with Aliyun OSS, including:
 - Restore files from Aliyun OSS to your vault
 - Manual store files to Aliyun OSS
 - Automatic store on file save
-- Configurable OSS connection settings  
+- Configurable OSS connection settings
 - Support for custom prefixes in OSS
 
 ## Installation
@@ -34,16 +35,19 @@ This plugin allows you to sync your Obsidian notes with Aliyun OSS, including:
 ## Usage
 
 ### Restore from Aliyun OSS
+
 1. Open the command palette (Ctrl/Cmd+P)
 2. Search for "Restore from Aliyun OSS" command
 3. Run the command to restore your files
 
-### Manual Sync to Aliyun OSS  
+### Manual Sync to Aliyun OSS
+
 1. Open the command palette (Ctrl/Cmd+P)
 2. Search for "Sync to Aliyun OSS" command
 3. Run the command to store your files
 
 ### Automatic Sync
+
 Files will be automatically synced to Aliyun OSS when saved (can be disabled in settings)
 
 ## Configuration
@@ -51,7 +55,7 @@ Files will be automatically synced to Aliyun OSS when saved (can be disabled in 
 Configure these settings in the plugin settings tab:
 
 - Access Key ID: Your Aliyun OSS Access Key ID
-- Access Key Secret: Your Aliyun OSS Access Key Secret  
+- Access Key Secret: Your Aliyun OSS Access Key Secret
 - Region: OSS region (e.g. oss-cn-hangzhou)
 - Bucket: Your OSS bucket name
 - Endpoint: Optional custom endpoint

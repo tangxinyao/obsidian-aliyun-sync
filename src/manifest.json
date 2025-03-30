@@ -1,11 +1,11 @@
 {
 	"id": "obsidian-aliyun-sync",
-	"name": "Aliyun Sync", 
+	"name": "Aliyun Sync",
 	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
+	"minAppVersion": "0.1.0",
 	"description": "Sync files between Obsidian and Aliyun OSS with restore and auto-store capabilities",
 	"author": "TANG Xinyao",
-	"authorUrl": "",
-	"fundingUrl": "",
+	"authorUrl": "https://github.com/tangxinyao",
+	"fundingUrl": "https://afdian.com/a/shaytang",
 	"isDesktopOnly": false
 }

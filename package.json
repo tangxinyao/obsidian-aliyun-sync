@@ -15,6 +15,9 @@
 		"@typescript-eslint/parser": "5.29.0",
 		"copyfiles": "^2.4.1",
 		"css-loader": "^7.1.2",
+		"eslint-config-prettier": "^10.1.1",
+		"eslint-plugin-prettier": "^5.2.5",
+		"prettier": "^3.5.3",
 		"rmraf": "^1.0.3",
 		"style-loader": "^4.0.0",
 		"ts-loader": "^9.5.2",
@@ -31,7 +34,10 @@
 	"publishConfig": {
 		"registry": "https://registry.npmmirror.com"
 	},
-	"keywords": ["obsidian", "aliyun"],
+	"keywords": [
+		"obsidian",
+		"aliyun"
+	],
 	"author": "tangxinyao",
 	"license": "MIT"
 }
