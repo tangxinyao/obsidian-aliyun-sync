@@ -19,6 +19,7 @@ const DEFAULT_SETTINGS: AliyunSyncSettings = {
 
 export default class AliyunSyncPlugin extends Plugin {
 	settings: AliyunSyncSettings;
+	private lastModifiedCache: Record<string, number> = {};
 
 	async onload() {
 		await this.loadSettings();
@@ -132,18 +133,32 @@ export default class AliyunSyncPlugin extends Plugin {
 
 			// Get all markdown files in vault
 			const files = this.app.vault.getMarkdownFiles();
+			let changedCount = 0;
 
 			for (const file of files) {
+				const stat = await this.app.vault.adapter.stat(file.path);
+				if (!stat) {
+					console.error(`Failed to get stats for file: ${file.path}`);
+					continue;
+				}
+				const lastModified = stat.mtime;
+
+				if (this.lastModifiedCache[file.path] === lastModified) {
+					continue; // Skip unchanged files
+				}
+
 				const content = await this.app.vault.read(file);
 				const remotePath = this.settings.prefix
 					? `${this.settings.prefix}/${file.path}`
 					: file.path;
 
 				await client.put(remotePath, Buffer.from(content));
+				this.lastModifiedCache[file.path] = lastModified;
+				changedCount++;
 				new Notice(`Stored ${file.path} to OSS`);
 			}
 
-			new Notice('All files stored successfully!');
+			new Notice(`Stored ${changedCount} changed files successfully!`);
 		} catch (err) {
 			new Notice(`Store failed: ${err.message}`);
 			console.error('Store error:', err);
