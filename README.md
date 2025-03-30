@@ -1,14 +1,16 @@
 # Obsidian Aliyun Sync Plugin
 
+English | [中文](./README_CN.md)
+
 ```mermaid
 flowchart TD
-    A[用户操作] --> B[手动同步到OSS]
-    A --> C[从OSS恢复文件]
-    D[文件保存] --> E[自动同步到OSS]
-    F[配置OSS连接] -->|设置凭证| G[Access Key ID/Secret]
-    F -->|设置参数| H[区域/存储桶/前缀]
-    B --> I[同步成功]
-    C --> J[恢复成功]
+    A[User Action] --> B[Manual Store to OSS]
+    A --> C[Restore from OSS]
+    D[File Save] --> E[Auto Store to OSS]
+    F[Configure OSS Connection] -->|Set Credentials| G[Access Key ID/Secret]
+    F -->|Set Parameters| H[Region/Bucket/Prefix]
+    B --> I[Store Success]
+    C --> J[Restore Success]
     E --> I
 ```
 
