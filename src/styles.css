@@ -1,8 +1,40 @@
-/*
+/* Aliyun OSS Sync Plugin Settings Styles */
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+/* Settings container */
+.aliyun-sync-settings {
+	padding: 36px;
+}
 
-If your plugin does not need CSS, delete this file.
+/* Title style */
+.aliyun-sync-settings h2 {
+	color: var(--text-normal);
+	margin-bottom: 8px;
+	font-size: 1.5em;
+	font-weight: 700;
+}
 
-*/
+/* Description text */
+.aliyun-sync-settings p {
+	color: var(--text-muted);
+	margin-bottom: 24px;
+	line-height: 1.5;
+}
+
+/* Setting items */
+.aliyun-sync-settings .setting-item {
+	padding-bottom: 16px;
+	font-weight: 500;
+}
+
+/* Setting descriptions */
+.aliyun-sync-settings .setting-item-description {
+	color: var(--text-muted);
+	font-size: 0.75em;
+	margin-top: 2px;
+	line-height: 1.4;
+}
+
+/* Input fields */
+.aliyun-sync-settings .setting-item-control input {
+	width: 320px;
+}

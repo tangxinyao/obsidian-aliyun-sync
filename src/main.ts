@@ -235,65 +235,90 @@ class AliyunSyncSettingTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this;
 		containerEl.empty();
+		containerEl.addClass('aliyun-sync-settings');
 
-		new Setting(containerEl).setName('Access Key ID').addText((text) =>
-			text
-				.setPlaceholder('Enter your Access Key ID')
-				.setValue(this.plugin.settings.accessKeyId)
-				.onChange(async (value) => {
-					this.plugin.settings.accessKeyId = value;
-					await this.plugin.saveSettings();
-				}),
-		);
+		// Add plugin title and description
+		containerEl.createEl('h2', { text: 'Aliyun OSS Sync Settings' });
+		containerEl.createEl('p', {
+			text: 'Configure your Aliyun OSS credentials and settings to enable automatic sync between your vault and OSS bucket.',
+		});
 
-		new Setting(containerEl).setName('Access Key Secret').addText((text) =>
-			text
-				.setPlaceholder('Enter your Access Key Secret')
-				.setValue(this.plugin.settings.accessKeySecret)
-				.onChange(async (value) => {
-					this.plugin.settings.accessKeySecret = value;
-					await this.plugin.saveSettings();
-				}),
-		);
+		new Setting(containerEl)
+			.setName('Access Key ID')
+			.setDesc('Your Aliyun account Access Key ID')
+			.addText((text) =>
+				text
+					.setPlaceholder('Enter your Access Key ID')
+					.setValue(this.plugin.settings.accessKeyId)
+					.onChange(async (value) => {
+						this.plugin.settings.accessKeyId = value;
+						await this.plugin.saveSettings();
+					}),
+			);
 
-		new Setting(containerEl).setName('Region').addText((text) =>
-			text
-				.setPlaceholder('e.g. oss-cn-hangzhou')
-				.setValue(this.plugin.settings.region)
-				.onChange(async (value) => {
-					this.plugin.settings.region = value;
-					await this.plugin.saveSettings();
-				}),
-		);
+		new Setting(containerEl)
+			.setName('Access Key Secret')
+			.setDesc('Your Aliyun account Access Key Secret')
+			.addText((text) =>
+				text
+					.setPlaceholder('Enter your Access Key Secret')
+					.setValue(this.plugin.settings.accessKeySecret)
+					.onChange(async (value) => {
+						this.plugin.settings.accessKeySecret = value;
+						await this.plugin.saveSettings();
+					}),
+			);
 
-		new Setting(containerEl).setName('Bucket').addText((text) =>
-			text
-				.setPlaceholder('Enter your bucket name')
-				.setValue(this.plugin.settings.bucket)
-				.onChange(async (value) => {
-					this.plugin.settings.bucket = value;
-					await this.plugin.saveSettings();
-				}),
-		);
+		new Setting(containerEl)
+			.setName('Region')
+			.setDesc('OSS region endpoint, e.g. oss-cn-hangzhou')
+			.addText((text) =>
+				text
+					.setPlaceholder('e.g. oss-cn-hangzhou')
+					.setValue(this.plugin.settings.region)
+					.onChange(async (value) => {
+						this.plugin.settings.region = value;
+						await this.plugin.saveSettings();
+					}),
+			);
 
-		new Setting(containerEl).setName('Endpoint (Optional)').addText((text) =>
-			text
-				.setPlaceholder('Enter custom endpoint if needed')
-				.setValue(this.plugin.settings.endpoint || '')
-				.onChange(async (value) => {
-					this.plugin.settings.endpoint = value || undefined;
-					await this.plugin.saveSettings();
-				}),
-		);
+		new Setting(containerEl)
+			.setName('Bucket')
+			.setDesc('Name of your OSS bucket')
+			.addText((text) =>
+				text
+					.setPlaceholder('Enter your bucket name')
+					.setValue(this.plugin.settings.bucket)
+					.onChange(async (value) => {
+						this.plugin.settings.bucket = value;
+						await this.plugin.saveSettings();
+					}),
+			);
 
-		new Setting(containerEl).setName('Prefix (Optional)').addText((text) =>
-			text
-				.setPlaceholder('Enter prefix if needed')
-				.setValue(this.plugin.settings.prefix || '')
-				.onChange(async (value) => {
-					this.plugin.settings.prefix = value || undefined;
-					await this.plugin.saveSettings();
-				}),
-		);
+		new Setting(containerEl)
+			.setName('Endpoint (Optional)')
+			.setDesc('Custom endpoint URL if not using standard OSS endpoint')
+			.addText((text) =>
+				text
+					.setPlaceholder('Enter custom endpoint if needed')
+					.setValue(this.plugin.settings.endpoint || '')
+					.onChange(async (value) => {
+						this.plugin.settings.endpoint = value || undefined;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName('Prefix (Optional)')
+			.setDesc('Optional path prefix for files in OSS bucket')
+			.addText((text) =>
+				text
+					.setPlaceholder('Enter prefix if needed')
+					.setValue(this.plugin.settings.prefix || '')
+					.onChange(async (value) => {
+						this.plugin.settings.prefix = value || undefined;
+						await this.plugin.saveSettings();
+					}),
+			);
 	}
 }
