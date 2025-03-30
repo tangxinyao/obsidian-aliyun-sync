@@ -20,6 +20,29 @@ const DEFAULT_SETTINGS: AliyunSyncSettings = {
 export default class AliyunSyncPlugin extends Plugin {
 	settings: AliyunSyncSettings;
 	private lastModifiedCache: Record<string, number> = {};
+	private restoring = false;
+
+	async deleteFromOSS(file: TFile) {
+		new Notice(`Deleting ${file.path} from Aliyun OSS...`);
+		try {
+			const client = new OSS({
+				region: this.settings.region,
+				accessKeyId: this.settings.accessKeyId,
+				accessKeySecret: this.settings.accessKeySecret,
+				bucket: this.settings.bucket,
+				endpoint: this.settings.endpoint,
+			});
+
+			const remotePath = this.settings.prefix ? `${this.settings.prefix}/${file.path}` : file.path;
+
+			await client.delete(remotePath);
+			delete this.lastModifiedCache[file.path];
+			console.log(`Deleted ${file.path} from OSS successfully!`);
+		} catch (err) {
+			new Notice(`Delete failed: ${err.message}`);
+			console.error('Delete error:', err);
+		}
+	}
 
 	async onload() {
 		await this.loadSettings();
@@ -50,17 +73,34 @@ export default class AliyunSyncPlugin extends Plugin {
 		) {
 			this.restore();
 
-			// Auto save to OSS on file save
+			// Store modified files with debounce
+			let storeTimeout: NodeJS.Timeout;
 			this.registerEvent(
 				this.app.vault.on('modify', async (file: TFile) => {
-					await this.store();
+					// Skip if this is a restore operation
+					if (this.restoring) return;
+
+					// Debounce to avoid multiple rapid saves
+					if (storeTimeout) clearTimeout(storeTimeout);
+					storeTimeout = setTimeout(() => {
+						this.store();
+					}, 1000);
+				}),
+			);
+
+			// Handle file deletions
+			this.registerEvent(
+				this.app.vault.on('delete', async (file: TFile) => {
+					await this.deleteFromOSS(file);
 				}),
 			);
 		}
 	}
 
 	async restore() {
+		this.restoring = true;
 		new Notice('Starting restore from Aliyun OSS...');
+		const err: Error | null = null;
 		try {
 			const client = new OSS({
 				region: this.settings.region,
@@ -109,14 +149,24 @@ export default class AliyunSyncPlugin extends Plugin {
 					: remotePath;
 
 				const result = await client.get(remotePath);
+				// Ensure parent directory exists
+				const dir = localPath.split('/').slice(0, -1).join('/');
+				if (dir) {
+					await this.app.vault.adapter.mkdir(dir);
+				}
 				await this.app.vault.adapter.write(localPath, result.content);
-				new Notice(`Restored ${localPath} from OSS`);
+				console.log(`Restored ${localPath} from OSS`);
 			}
 
 			new Notice('All files restored successfully!');
 		} catch (err) {
+			console.error(err);
 			new Notice(`Restore failed: ${err.message}`);
-			console.error('Restore error:', err);
+		} finally {
+			this.restoring = false;
+			if (err) {
+				console.error('Restore error:', err);
+			}
 		}
 	}
 
@@ -155,7 +205,7 @@ export default class AliyunSyncPlugin extends Plugin {
 				await client.put(remotePath, Buffer.from(content));
 				this.lastModifiedCache[file.path] = lastModified;
 				changedCount++;
-				new Notice(`Stored ${file.path} to OSS`);
+				console.log(`Stored ${file.path} to OSS`);
 			}
 
 			new Notice(`Stored ${changedCount} changed files successfully!`);
