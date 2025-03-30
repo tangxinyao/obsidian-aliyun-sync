@@ -237,8 +237,34 @@ class AliyunSyncSettingTab extends PluginSettingTab {
 		containerEl.empty();
 		containerEl.addClass('aliyun-sync-settings');
 
-		// Add plugin title and description
-		containerEl.createEl('h2', { text: 'Aliyun OSS Sync Settings' });
+		// Add plugin title and description with help button
+		const titleContainer = containerEl.createDiv({ cls: 'aliyun-sync-title-container' });
+		titleContainer.createEl('h2', { text: 'Aliyun Sync Settings' });
+
+		// Add help button with external link icon
+		const helpButton = titleContainer.createEl('button', {
+			cls: 'aliyun-sync-help-button',
+		});
+		helpButton.createEl('span', { text: 'Help' });
+		const icon = helpButton.createSvg('svg', {
+			attr: {
+				width: '16',
+				height: '16',
+				viewBox: '0 0 24 24',
+				fill: 'none',
+				stroke: 'currentColor',
+				'stroke-width': '1',
+				'stroke-linecap': 'round',
+				'stroke-linejoin': 'round',
+			},
+			cls: 'aliyun-sync-help-icon',
+		});
+		icon.innerHTML =
+			'<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>';
+		helpButton.onClickEvent(() => {
+			window.open('https://help.aliyun.com/document_detail/31827.html');
+		});
+
 		containerEl.createEl('p', {
 			text: 'Configure your Aliyun OSS credentials and settings to enable automatic sync between your vault and OSS bucket.',
 		});
