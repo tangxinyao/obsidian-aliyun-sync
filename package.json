@@ -5,7 +5,7 @@
 	"main": "dist/main.js",
 	"scripts": {
 		"dev": "webpack --mode development --watch",
-		"build": "webpack --mode production && copyfiles -f src/styles.css src/manifest.json dist",
+		"build": "webpack --mode production && copyfiles -f styles.css manifest.json dist",
 		"version": "node version-bump.mjs"
 	},
 	"devDependencies": {
