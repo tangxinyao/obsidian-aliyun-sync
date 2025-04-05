@@ -99,7 +99,6 @@ export default class AliyunSyncPlugin extends Plugin {
 
 	async restore() {
 		this.restoring = true;
-		new Notice('Starting restore from Aliyun OSS...');
 		const err: Error | null = null;
 		try {
 			const client = new OSS({
@@ -171,7 +170,6 @@ export default class AliyunSyncPlugin extends Plugin {
 	}
 
 	async store() {
-		new Notice('Starting store to Aliyun OSS...');
 		try {
 			const client = new OSS({
 				region: this.settings.region,
@@ -239,7 +237,7 @@ class AliyunSyncSettingTab extends PluginSettingTab {
 
 		// Add plugin title and description with help button
 		const titleContainer = containerEl.createDiv({ cls: 'aliyun-sync-title-container' });
-		titleContainer.createEl('h2', { text: 'Aliyun Sync Settings' });
+		titleContainer.createEl('h2', { text: 'Aliyun Sync' });
 
 		// Add help button with external link icon
 		const helpButton = titleContainer.createEl('button', {
@@ -259,10 +257,21 @@ class AliyunSyncSettingTab extends PluginSettingTab {
 			},
 			cls: 'aliyun-sync-help-icon',
 		});
-		icon.innerHTML =
-			'<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>';
+		const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		iconPath.setAttribute('d', 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6');
+		icon.appendChild(iconPath);
+		const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+		polyline.setAttribute('points', '15 3 21 3 21 9');
+		icon.appendChild(polyline);
+		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+		line.setAttribute('x1', '10');
+		line.setAttribute('y1', '14');
+		line.setAttribute('x2', '21');
+		line.setAttribute('y2', '3');
+		icon.appendChild(line);
+
 		helpButton.onClickEvent(() => {
-			window.open('https://help.aliyun.com/document_detail/31827.html');
+			window.open('https://help.aliyun.com/zh/oss/terms-2');
 		});
 
 		containerEl.createEl('p', {
